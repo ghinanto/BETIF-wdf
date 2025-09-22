@@ -84,8 +84,6 @@ fi
 sudo /sbin/ldconfig
 #install dependencies
 conda install compilers "cmake>3.10" make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
-#set conda env root as install dir
-#export ENV_ROOT="$1"
 #install pytsa
 echo "PyTSA installation!"
 git clone https://github.com/elenacuoco/p4TSA && cd p4TSA && cmake --install-prefix=$ENV_ROOT CMakeLists.txt \
@@ -105,18 +103,19 @@ cd wdf && python setup.py install &&\
 cd .. && rm -fr wdf/
 #check installation
 # Check if wdf can be imported
+echo 
 "$ENV_ROOT/bin/python" -c "import wdf" 2>/dev/null
 if [ $? -eq 0 ]; then
-  echo "Library wdf is available"
+  echo "Library wdf installed correctly!"
 else
-  echo "Error: Cannot import wdf"
+  echo "Error: Cannot import wdf. Something went wrong during installation."
   exit 1
 fi
 # Check if pytsa can be imported
 "$ENV_ROOT/bin/python" -c "import pytsa" 2>/dev/null
 if [ $? -eq 0 ]; then
-  echo "Library pytsa is available"
+  echo "Library pytsa installed correctly!"
 else
-  echo "Error: Cannot import pytsa"
+  echo "Error: Cannot import pytsa. Something went wrong during installation."
   exit 1
 fi
