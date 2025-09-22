@@ -40,6 +40,31 @@ if [ $option_processed -eq 0 ]; then
     echo "Error: Not inside a Conda environment (CONDA_PREFIX is not set)"
     exit 1
   fi
+
+  # Check if Python is available in the Conda environment
+  if [ ! -x "$CONDA_PREFIX/bin/python" ]; then
+    echo "Error: Python not found in '$CONDA_PREFIX/bin'"
+    exit 1
+  fi
+
+  # Get Python version
+  python_version=$("$CONDA_PREFIX/bin/python" -c "import sys; print(sys.version_info[0]); print(sys.version_info[1])" 2>/dev/null)
+  if [ $? -ne 0 ]; then
+    echo "Error: Unable to retrieve Python version"
+    exit 1
+  fi
+
+  # Extract major and minor version numbers
+  set -- $python_version
+  major_version=$1
+  minor_version=$2
+
+  # Check if Python version is at least 3.11
+  if [ "$major_version" -lt 3 ] || { [ "$major_version" -eq 3 ] && [ "$minor_version" -lt 11 ]; }; then
+    echo "Error: Python version $major_version.$minor_version is too low, requires 3.11 or higher"
+    exit 1
+  fi
+
   # Prompt user to install in CONDA_PREFIX
   echo "Install wdf library in $CONDA_PREFIX? ([y]/n)"
   read answer
