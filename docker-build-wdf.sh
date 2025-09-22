@@ -37,4 +37,4 @@ if [ $option_processed -eq 0 ]; then
   Help
   exit 0
 fi
-sudo docker -D build --no-cache --build-arg HOST_UID=$(id -u) -t wdf-betif:$1 -f Dockefile:$1 .
+sudo docker -D build --build-arg HOST_UID=$(id -u) -t wdf-betif:$1 -f Dockefile-$1 .
