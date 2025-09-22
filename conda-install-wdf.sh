@@ -85,7 +85,7 @@ sudo /sbin/ldconfig
 #install dependencies
 conda install compilers "cmake>3.10" make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
 #set conda env root as install dir
-export ENV_ROOT="$1"
+#export ENV_ROOT="$1"
 #install pytsa
 echo "PyTSA installation!"
 git clone https://github.com/elenacuoco/p4TSA && cd p4TSA && cmake --install-prefix=$ENV_ROOT CMakeLists.txt \
