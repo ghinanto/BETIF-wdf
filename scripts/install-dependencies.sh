@@ -1,3 +1,3 @@
-conda install compilers cmake make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
+conda install compilers "cmake>=3.10" make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
 
 
