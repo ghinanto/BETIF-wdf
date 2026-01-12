@@ -1,0 +1,13 @@
+FROM ghcr.io/betif-difaet/jlab:betif-alma9-cpu-v0.1.0
+RUN --mount=type=cache,target=/opt/conda/pkgs \
+    conda install -c conda-forge -y mamba && \
+    conda config --add channels conda-forge && \
+    conda config --set channel_priority strict && \
+    CONDA_SUBDIR=$(conda config --show subdir | awk '{print $2}') && \
+    echo "=== Downloading IGWN py311 environment for ${CONDA_SUBDIR} ===" && \
+    wget -O /tmp/igwn-py311.txt \
+         https://computing.docs.ligo.org/conda/environments/${CONDA_SUBDIR}/igwn-py311.txt && \
+    echo "=== Installing ${CONDA_SUBDIR} IGWN py311 environment into current active environment ===" && \
+    mamba install -c conda-forge --file /tmp/igwn-py311.txt -y && \
+    rm -f /tmp/igwn-py311.txt && \
+    conda clean -afy
