@@ -1,0 +1,27 @@
+FROM docker.io/ghinanto/betif-igwn:cpu
+
+ENV ENV_ROOT="/opt/conda"
+
+RUN dnf config-manager --set-enabled crb
+RUN dnf install -y gcc gcc-c++ gcc-gfortran cmake make git \
+    boost-devel pybind11-devel fftw-devel gsl-devel
+
+RUN mamba install conda-forge::pybind11 conda-forge::libframel
+RUN /sbin/ldconfig
+
+RUN git clone https://github.com/elenacuoco/p4TSA && cd p4TSA && cmake CMakeLists.txt \
+    && make -j "$(nproc)" \
+    && make install \
+    && cd python-wrapper \
+    && python setup.py install \
+    && cd ../.. \
+    && rm -fr p4TSA
+
+RUN /sbin/ldconfig
+
+RUN git clone https://gitlab.com/wdfpipe/wdf.git && \
+    cd wdf && python setup.py install && \
+    cd .. && rm -fr wdf/
+
+RUN /sbin/ldconfig
+
